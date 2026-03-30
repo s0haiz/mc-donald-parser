@@ -23,7 +23,7 @@ structured, queryable data using a 3-prompt Claude API pipeline.
 smart-tool-log-parser/
 ├── src/
 │   ├── ingestion/        # File router and format pre-processors
-│   ├── parser/           # 3-prompt Claude API parsing pipeline
+│   ├── parser/           # 3-prompt LLM API parsing pipeline
 │   ├── normalisation/    # Schema mapping, unit and timestamp normalisation
 │   └── ui/               # Streamlit app, Plotly charts, export
 ├── tests/
@@ -95,7 +95,7 @@ Copy `.env.example` to `.env` and fill in your values. Never commit `.env`.
 
 | Variable | Description |
 |----------|-------------|
-| `ANTHROPIC_API_KEY` | Your Anthropic API key from console.anthropic.com |
+| `LLM_API_KEY` | Your LLM API key from console.anthropic.com |
 | `DATABASE_URL` | SQLite DB path — default is `sqlite:///data/logs.db` |
 | `LOG_CHUNK_SIZE` | Lines per LLM chunk — default is `200` |
 | `CONFIDENCE_THRESHOLD` | Minimum parse confidence before flagging — default is `0.7` |
