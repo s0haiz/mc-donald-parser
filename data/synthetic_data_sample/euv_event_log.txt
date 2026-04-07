@@ -1,0 +1,66 @@
+================================================================================
+ EQUIPMENT EVENT LOG  |  Machine: MCH_0001  |  Date: 2026-01-13
+ Software Release: 6.3.0  |  UTC Offset: +0800
+================================================================================
+
+01/13/2026 00:00:00.1417 Machine:MCH_0001 (Rel:VER0001, ERLO [20703], ERLOlogfile.cpp, ?.?, 245)
+SYSTEM EVENT: ER-4102 DEFAULT
+Log file 'ER/ER_event_log_#MCH0001_20260113_000000' is created, 'ER/ER_event_log_#MCH0001_20251231_235300' is closed. UTC-offset: +0800
+
+01/13/2026 00:00:00.1414 Machine:MCH_0001 (Rel:VER0001, DWIO [dc], DWDMxOA_rq.c, ?.?, 434)
+SYSTEM EVENT: ER-0FFF DEFAULT (linked to DW-20E2)
+DEACTIVATE: DW-20e2
+DEACTIVATE: DW-20e2
+
+01/13/2026 00:00:00.2013 Machine:MCH_0001 (Rel:VER0001, DWIO [dc], DWDMxOA_rq.c, ?.?, 432)
+SYSTEM WARNING: DW-20E2 DEFAULT
+The scan time is too short to perform an OASIS light measurement. Current scan time: 15.00 [ms], required minimum scan time: 25.00 [ms]
+Scan time too short to program oasis light trigger.
+Time specified: 15.00 ms
+Minimal time required: 25.00 ms
+[DWDMxOA_rq_program_light_trigger:DWFMxOA_LIGHT_TIMING_WARNING]
+
+01/13/2026 06:15:51.5474 Machine:MCH_0001 (Rel:VER0001, PROC [proc], PROCmain.c, ?.?, 812)
+SYSTEM EVENT: ER-1001 DEFAULT
+Lot LOT_0001 loaded. Wafer count: 25. Recipe: RCP_0001.
+
+01/13/2026 06:15:58.1120 Machine:MCH_0001 (Rel:VER0001, VACU [vac], VACUpump.c, ?.?, 304)
+SYSTEM EVENT: ER-2200 DEFAULT
+Chamber pressure stabilized at 9.0 mTorr. Proceeding to etch step.
+
+01/13/2026 06:16:03.4412 Machine:MCH_0001 (Rel:VER0001, TEMP [thm], TEMPsensor.c, ?.?, 198)
+SYSTEM ALARM: ALM-TEMP_HIGH
+Chamber temperature exceeded upper control limit. Measured: 91.5 C, UCL: 90.0 C.
+Auto-corrective action: RF power ramped down to 130 W.
+
+01/13/2026 06:16:04.0000 Machine:MCH_0001 (Rel:VER0001, PROC [proc], PROCmain.c, ?.?, 820)
+SYSTEM EVENT: ER-2301 DEFAULT
+Purge sequence initiated. Gas flow: He 400 sccm.
+
+01/13/2026 06:16:07.8833 Machine:MCH_0001 (Rel:VER0001, PROC [proc], PROCmain.c, ?.?, 835)
+SYSTEM EVENT: ER-2310 DEFAULT
+Purge complete. Chamber returned to idle state. Pressure: 0.0 mTorr.
+
+01/13/2026 06:20:00.0000 Machine:MCH_0001 (Rel:VER0001, PROC [proc], PROCmain.c, ?.?, 812)
+SYSTEM EVENT: ER-1001 DEFAULT
+Wafer WFR_0002 loaded into chamber C1. Recipe: RCP_0001 (step ETCH).
+
+01/13/2026 06:24:05.3310 Machine:MCH_0001 (Rel:VER0001, DWIO [dc], DWDMxOA_rq.c, ?.?, 434)
+SYSTEM EVENT: ER-0FFF DEFAULT (linked to DW-20E2)
+DEACTIVATE: DW-20e2
+DEACTIVATE: DW-20e2
+
+01/13/2026 06:24:05.4122 Machine:MCH_0001 (Rel:VER0001, DWIO [dc], DWDMxOA_rq.c, ?.?, 432)
+SYSTEM WARNING: DW-20E2 DEFAULT
+The scan time is too short to perform an OASIS light measurement. Current scan time: 15.00 [ms], required minimum scan time: 25.00 [ms]
+Scan time too short to program oasis light trigger.
+Time specified: 15.00 ms
+Minimal time required: 25.00 ms
+[DWDMxOA_rq_program_light_trigger:DWFMxOA_LIGHT_TIMING_WARNING]
+
+01/13/2026 06:30:00.0000 Machine:MCH_0001 (Rel:VER0001, PROC [proc], PROCmain.c, ?.?, 900)
+SYSTEM EVENT: ER-9999 DEFAULT
+End of lot LOT_0001. Total wafers processed: 25. Total alarms: 1. Total warnings: 3.
+================================================================================
+ END OF LOG
+================================================================================

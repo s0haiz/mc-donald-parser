@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ADELdr:Recipe xmlns:ADELdr="http://www.asml.com/XMLSchema/MT/Generic/ADELdr/v1.5"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <Title>Dose Recipe</Title>
+    <MachineID>MCH_0001</MachineID>
+    <MachineCustomerName>CUST_0001</MachineCustomerName>
+    <MachineType>MTYPE_EUV_001</MachineType>
+    <SoftwareRelease>6.3.0</SoftwareRelease>
+    <CreatedBy>CREATOR_0001</CreatedBy>
+    <CreateTime>2026-01-01T00:00:00.000+00:00</CreateTime>
+    <DocumentId>DOC_0001</DocumentId>
+    <DocumentType>ADELdr</DocumentType>
+    <DocumentTypeVersion>v1.5</DocumentTypeVersion>
+  </Header>
+
+  <RecipeName>RCP_0001</RecipeName>
+  <ApprovedBy>CREATOR_0002</ApprovedBy>
+  <ExpirationTime>2039-02-09T09:00:31+00:00</ExpirationTime>
+  <TargetMachineID>MCH_0001</TargetMachineID>
+  <TargetMachineCustomerName>CUST_0001</TargetMachineCustomerName>
+
+  <ProcessParameters>
+    <ExposureDose unit="mJ/cm2">25.40</ExposureDose>
+    <FocusOffset unit="nm">0.0</FocusOffset>
+    <ScanSpeed unit="mm/s">600</ScanSpeed>
+    <WaferTemperature unit="C">23.0</WaferTemperature>
+    <PulseEnergy unit="mJ">1.35</PulseEnergy>
+    <NAValue>0.33</NAValue>
+    <Sigma_outer>0.89</Sigma_outer>
+    <Sigma_inner>0.64</Sigma_inner>
+  </ProcessParameters>
+
+  <SlitProfileList>
+    <elt>
+      <SlitProfileId>slitProfile_1</SlitProfileId>
+      <SlitProfile>
+        <LegendreCofficientList>
+          <elt><SetPoint>0.000</SetPoint></elt>
+          <elt><SetPoint>0.000</SetPoint></elt>
+          <elt><SetPoint>0.000</SetPoint></elt>
+        </LegendreCofficientList>
+      </SlitProfile>
+    </elt>
+    <elt>
+      <SlitProfileId>slitProfile_2</SlitProfileId>
+      <SlitProfile>
+        <LegendreCofficientList>
+          <elt><SetPoint>0.012</SetPoint></elt>
+          <elt><SetPoint>-0.003</SetPoint></elt>
+          <elt><SetPoint>0.001</SetPoint></elt>
+        </LegendreCofficientList>
+      </SlitProfile>
+    </elt>
+  </SlitProfileList>
+
+  <WaferAlignmentSettings>
+    <AlignmentModel>BFAA</AlignmentModel>
+    <AlignmentMarkType>P22</AlignmentMarkType>
+    <MaxResidual unit="nm">3.5</MaxResidual>
+  </WaferAlignmentSettings>
+
+  <AuditLog>
+    <Entry>
+      <Timestamp>2026-01-01T08:22:10.000+00:00</Timestamp>
+      <User>OPERATOR_01</User>
+      <Action>RecipeCreated</Action>
+    </Entry>
+    <Entry>
+      <Timestamp>2026-01-01T09:10:44.000+00:00</Timestamp>
+      <User>CREATOR_0002</User>
+      <Action>RecipeApproved</Action>
+    </Entry>
+  </AuditLog>
+</ADELdr:Recipe>

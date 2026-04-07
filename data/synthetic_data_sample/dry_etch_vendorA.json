@@ -1,0 +1,74 @@
+{
+  "ControlJob": {
+    "CtrlJobID": "CJOB_0001",
+    "EquipmentID": "EQP_DE_001",
+    "FileType": "SensorData",
+    "ParquetSchemaVersion": "v2.1",
+    "ProcessJobs": [
+      {
+        "PRJobID": "PRJOB_0001",
+        "LotID": "LOT_0001",
+        "RecipeStartTime": "2026-01-13T06:15:51.000000Z",
+        "ModuleProcessReports": [
+          {
+            "Keys": {
+              "ModuleID": "MOD_0001",
+              "RecipeStepID": "RCP_STEP_01",
+              "WaferID": "WFR_0001"
+            },
+            "Attributes": {
+              "Events": {
+                "ControlStateEvents": [
+                  {
+                    "EventID": 229,
+                    "Text": "Recipe prerequisites started",
+                    "DateTime": "2026-01-13T06:15:51.547372Z"
+                  },
+                  {
+                    "EventID": 230,
+                    "Text": "Chamber pressure stabilized",
+                    "DateTime": "2026-01-13T06:15:58.112000Z"
+                  }
+                ]
+              },
+              "Alarms": [],
+              "Errors": []
+            },
+            "SlotID": "SLOT_0001",
+            "RecipeName": "RCP_0001",
+            "RecipeStepName": "Prerequisites",
+            "SensorData": [
+              {
+                "SensorID": "SENSOR_0001",
+                "SensorName": "ChamberPressure_mTorr",
+                "Measurements": [
+                  { "DateTime": "2026-01-13T06:15:51.491795Z", "Value": 0.0 },
+                  { "DateTime": "2026-01-13T06:15:52.491795Z", "Value": 3.2 },
+                  { "DateTime": "2026-01-13T06:15:53.491795Z", "Value": 7.8 }
+                ]
+              },
+              {
+                "SensorID": "SENSOR_0002",
+                "SensorName": "RFPower_W",
+                "Measurements": [
+                  { "DateTime": "2026-01-13T06:15:51.491795Z", "Value": 0 },
+                  { "DateTime": "2026-01-13T06:15:52.491795Z", "Value": 150 },
+                  { "DateTime": "2026-01-13T06:15:53.491795Z", "Value": 150 }
+                ]
+              },
+              {
+                "SensorID": "SENSOR_0003",
+                "SensorName": "Temperature_C",
+                "Measurements": [
+                  { "DateTime": "2026-01-13T06:15:51.491795Z", "Value": 20.0 },
+                  { "DateTime": "2026-01-13T06:15:52.491795Z", "Value": 45.3 },
+                  { "DateTime": "2026-01-13T06:15:53.491795Z", "Value": 85.2 }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
