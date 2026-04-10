@@ -1,0 +1,108 @@
+{
+  "ControlJob": {
+    "CtrlJobID": "CJOB_0002",
+    "EquipmentID": "EQP_DE_002",
+    "ProcessJobs": [
+      {
+        "PRJobID": "PRJOB_0002",
+        "LotID": "LOT_0002",
+        "RecipeStartTime": "2026-01-13T07:00:00.000000Z",
+        "ModuleProcessReports": [
+          {
+            "Keys": {
+              "ModuleID": "",
+              "RecipeStepID": "1.0",
+              "WaferID": "WFR_0003"
+            },
+            "Attributes": {
+              "Events": {
+                "ControlStateEvents": [
+                  {
+                    "Name": "NAME_0001",
+                    "DateTime": "2026-01-13T07:00:00.000000Z"
+                  },
+                  {
+                    "Name": "NAME_0002",
+                    "DateTime": "2026-01-13T07:00:06.530000Z"
+                  },
+                  {
+                    "Name": "NAME_0003",
+                    "DateTime": "2026-01-13T07:00:12.810000Z"
+                  }
+                ]
+              }
+            },
+            "LPID": "1",
+            "SlotID": "SLOT_0002",
+            "EquipmentID": "EQP_DE_002",
+            "Recipe": {
+              "RecipeID": "RCP_0002",
+              "Type": "PROCESS"
+            },
+            "SensorData": [
+              {
+                "Keys": {
+                  "SensorID": "SENSOR_0001"
+                },
+                "Measurements": [
+                  { "DateTime": "2026-01-13T07:00:00.100000Z", "Value": 0 },
+                  { "DateTime": "2026-01-13T07:00:00.200000Z", "Value": 0 },
+                  { "DateTime": "2026-01-13T07:00:00.300000Z", "Value": 2.1 },
+                  { "DateTime": "2026-01-13T07:00:00.400000Z", "Value": 5.5 },
+                  { "DateTime": "2026-01-13T07:00:00.500000Z", "Value": 8.8 }
+                ]
+              },
+              {
+                "Keys": {
+                  "SensorID": "SENSOR_0002"
+                },
+                "Measurements": [
+                  { "DateTime": "2026-01-13T07:00:00.100000Z", "Value": 21.0 },
+                  { "DateTime": "2026-01-13T07:00:00.200000Z", "Value": 40.5 },
+                  { "DateTime": "2026-01-13T07:00:00.300000Z", "Value": 63.2 },
+                  { "DateTime": "2026-01-13T07:00:00.400000Z", "Value": 80.7 },
+                  { "DateTime": "2026-01-13T07:00:00.500000Z", "Value": 84.9 }
+                ]
+              },
+              {
+                "Keys": {
+                  "SensorID": "SENSOR_0003"
+                },
+                "Measurements": [
+                  { "DateTime": "2026-01-13T07:00:00.100000Z", "Value": 0 },
+                  { "DateTime": "2026-01-13T07:00:00.200000Z", "Value": 100 },
+                  { "DateTime": "2026-01-13T07:00:00.300000Z", "Value": 145 },
+                  { "DateTime": "2026-01-13T07:00:00.400000Z", "Value": 148 },
+                  { "DateTime": "2026-01-13T07:00:00.500000Z", "Value": 150 }
+                ]
+              },
+              {
+                "Keys": {
+                  "SensorID": "SENSOR_0004"
+                },
+                "Measurements": [
+                  { "DateTime": "2026-01-13T07:00:00.100000Z", "Value": 49.8 },
+                  { "DateTime": "2026-01-13T07:00:00.200000Z", "Value": 49.9 },
+                  { "DateTime": "2026-01-13T07:00:00.300000Z", "Value": 50.1 },
+                  { "DateTime": "2026-01-13T07:00:00.400000Z", "Value": 50.0 },
+                  { "DateTime": "2026-01-13T07:00:00.500000Z", "Value": 50.2 }
+                ]
+              }
+            ],
+            "Alarms": [
+              {
+                "AlarmID": "ALM_0042",
+                "AlarmCode": "PRES_LOW",
+                "Severity": "WARNING",
+                "DateTime": "2026-01-13T07:00:00.350000Z",
+                "Message": "Chamber pressure below lower control limit",
+                "ParameterValue": 2.1,
+                "LowerLimit": 3.0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
