@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAISC Smart Tool Log Parser — Demo</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: #131a2e;
+    --panel-hi: #1c2542;
+    --text: #e8ecf9;
+    --muted: #8a93b0;
+    --accent: #5eb3ff;
+    --good: #57d59e;
+    --warn: #f6b65c;
+    --bad: #ff6b6b;
+    --border: #22294a;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px; line-height: 1.5;
+  }
+  header {
+    padding: 20px 28px; border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #141c38 0%, #0b1020 100%);
+  }
+  header h1 { margin: 0; font-size: 20px; letter-spacing: 0.2px; }
+  header .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  main { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 67px); }
+  aside {
+    border-right: 1px solid var(--border); background: var(--panel);
+    padding: 14px; overflow-y: auto;
+  }
+  aside h2 { font-size: 11px; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; letter-spacing: 1px; }
+  .sample-btn {
+    display: block; width: 100%; text-align: left; padding: 9px 11px;
+    background: transparent; color: var(--text); border: 1px solid transparent;
+    border-radius: 6px; font-family: inherit; font-size: 13px;
+    cursor: pointer; margin-bottom: 3px;
+  }
+  .sample-btn:hover { background: var(--panel-hi); }
+  .sample-btn.active { background: var(--panel-hi); border-color: var(--accent); }
+  .sample-btn .fmt { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-left: 6px; }
+  section.content { padding: 20px 28px; overflow-y: auto; }
+  .envelope-head {
+    display: flex; flex-wrap: wrap; gap: 10px 18px;
+    padding: 14px 16px; background: var(--panel); border-radius: 8px;
+    margin-bottom: 16px; border: 1px solid var(--border);
+  }
+  .envelope-head > div { display: flex; flex-direction: column; }
+  .envelope-head .k { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .envelope-head .v { font-family: var(--mono); font-size: 13px; }
+  .pill {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 11px; font-family: var(--mono); font-weight: 600;
+  }
+  .pill.good { background: rgba(87,213,158,0.15); color: var(--good); }
+  .pill.warn { background: rgba(246,182,92,0.15); color: var(--warn); }
+  .pill.bad  { background: rgba(255,107,107,0.15); color: var(--bad); }
+  .pill.neutral { background: rgba(94,179,255,0.15); color: var(--accent); }
+
+  h3 { margin: 22px 0 10px; font-size: 13px; text-transform: uppercase;
+       letter-spacing: 1px; color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; background: var(--panel);
+          border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  th, td { padding: 9px 12px; text-align: left; font-size: 13px;
+           border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--panel-hi); font-size: 11px; text-transform: uppercase;
+       color: var(--muted); letter-spacing: 1px; font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  td.mono { font-family: var(--mono); font-size: 12px; }
+  td.num  { font-family: var(--mono); text-align: right; }
+  td .src { color: var(--muted); font-size: 11px; font-family: var(--mono); }
+
+  details {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; margin-top: 10px;
+  }
+  details summary { cursor: pointer; font-size: 12px; color: var(--muted);
+                    text-transform: uppercase; letter-spacing: 1px; }
+  details pre { font-family: var(--mono); font-size: 11px; overflow: auto;
+                color: var(--text); margin: 10px 0 0; max-height: 360px; }
+  .event-type {
+    display: inline-block; padding: 1px 6px; font-size: 10px; border-radius: 3px;
+    font-family: var(--mono); font-weight: 600;
+  }
+  .event-type.ALARM, .event-type.CRITICAL { background: rgba(255,107,107,0.18); color: var(--bad); }
+  .event-type.WARNING { background: rgba(246,182,92,0.18); color: var(--warn); }
+  .event-type.SENSOR_READ, .event-type.PROCESS_STEP { background: rgba(94,179,255,0.18); color: var(--accent); }
+  .event-type.INFO { background: rgba(138,147,176,0.18); color: var(--muted); }
+  .empty { color: var(--muted); font-style: italic; padding: 10px; }
+  .footer-note { padding: 14px 16px; color: var(--muted); font-size: 12px; margin-top: 18px; }
+  .stat-strip { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+  .stat-box {
+    flex: 1 1 140px; padding: 10px 12px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 8px;
+  }
+  .stat-box .n { font-size: 22px; font-weight: 600; font-family: var(--mono); }
+  .stat-box .lbl { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Smart Tool Log Parser — Demo Dashboard</h1>
+  <div class="sub">NAISC · Micron @ AISG 2026 · Canonical schema + 3-tier mapping (alias → fuzzy → LLM)</div>
+</header>
+<main>
+  <aside>
+    <h2>Sample logs</h2>
+    <div id="sampleList"></div>
+    <h2 style="margin-top: 24px;">Tool families</h2>
+    <div style="font-size: 12px; color: var(--muted); line-height: 1.9;">
+      dry_etch · euv_scanner · cmp
+    </div>
+    <h2 style="margin-top: 24px;">Supported formats</h2>
+    <div style="font-size: 12px; color: var(--muted); line-height: 1.9;">
+      JSON · XML · CSV · Parquet<br>
+      Syslog+KVP · Plain text · MCRN binary
+    </div>
+  </aside>
+  <section class="content" id="content"></section>
+</main>
+
+<script>
+// Registry of pre-computed outputs generated by `python -m parser.cli …`
+const SAMPLES = [
+  { id: "dry_etch_vendorA",       label: "Vendor A dry etch",      fmt: "JSON"    },
+  { id: "dry_etch_vendorB",       label: "Vendor B dry etch",      fmt: "JSON"    },
+  { id: "dry_etch_vendorC",       label: "Vendor C dry etch",      fmt: "Parquet" },
+  { id: "sensor_trace",           label: "Flat sensor trace",      fmt: "CSV"     },
+  { id: "euv_scanner_dose_recipe",label: "EUV dose recipe",        fmt: "XML"     },
+  { id: "euv_event_log",          label: "EUV event log",          fmt: "Text"    },
+  { id: "cmp_syslog_kvp",         label: "CMP syslog + KVP",       fmt: "Syslog"  },
+  { id: "highspeed_diag",         label: "MCRN binary diagnostic", fmt: "Binary"  },
+];
+
+const list = document.getElementById("sampleList");
+SAMPLES.forEach((s, i) => {
+  const b = document.createElement("button");
+  b.className = "sample-btn" + (i === 0 ? " active" : "");
+  b.innerHTML = `${s.label} <span class="fmt">${s.fmt}</span>`;
+  b.onclick = () => { setActive(b); load(s.id); };
+  list.appendChild(b);
+});
+
+function setActive(btn) {
+  document.querySelectorAll(".sample-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+async function load(id) {
+  const content = document.getElementById("content");
+  content.innerHTML = `<div class="empty">Loading ${id}.json …</div>`;
+  try {
+    const r = await fetch(`../sample_outputs/${id}.json`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    render(data);
+  } catch (err) {
+    content.innerHTML = `<div class="empty">
+      Could not load <code>${id}.json</code>: ${err.message}<br><br>
+      Run <code>python -m parser.cli &lt;file&gt; --out sample_outputs/${id}.json --pretty</code>
+      first, or open this page through a local server (e.g. <code>python -m http.server</code>).
+    </div>`;
+  }
+}
+
+function render(d) {
+  const content = document.getElementById("content");
+  const methodTotals = { alias_match: 0, fuzzy_match: 0, llm_fallback: 0, unknown: 0 };
+  for (const v of Object.values(d.normalizedFields || {})) methodTotals[v.method] = (methodTotals[v.method] || 0) + 1;
+  for (const m of Object.values(d.mappingMetadata || {})) {
+    if (m.method === "unknown") methodTotals.unknown++;
+  }
+
+  const validPill = d.validationPassed
+    ? `<span class="pill good">VALIDATED</span>`
+    : `<span class="pill bad">FAILED</span>`;
+
+  content.innerHTML = `
+    <div class="envelope-head">
+      <div><span class="k">File</span><span class="v">${escape(d.fileName || d.fileId)}</span></div>
+      <div><span class="k">Format</span><span class="v">${escape(d.format)}</span></div>
+      <div><span class="k">Tool Type</span><span class="v">${escape(d.toolType || "—")}</span></div>
+      <div><span class="k">Vendor</span><span class="v">${escape(d.vendor || "—")}</span></div>
+      <div><span class="k">Timestamp</span><span class="v">${escape(d.timestamp || "—")}</span></div>
+      <div><span class="k">Status</span><span class="v">${validPill}</span></div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-box"><div class="n">${Object.keys(d.normalizedFields || {}).length}</div><div class="lbl">Normalized fields</div></div>
+      <div class="stat-box"><div class="n">${(d.events || []).length}</div><div class="lbl">Events</div></div>
+      <div class="stat-box"><div class="n">${(d.reviewQueue || []).length}</div><div class="lbl">Review queue</div></div>
+      <div class="stat-box"><div class="n">${methodTotals.alias_match}</div><div class="lbl">Alias match (T1)</div></div>
+      <div class="stat-box"><div class="n">${methodTotals.fuzzy_match}</div><div class="lbl">Fuzzy match (T2)</div></div>
+      <div class="stat-box"><div class="n">${methodTotals.llm_fallback}</div><div class="lbl">LLM fallback (T3)</div></div>
+    </div>
+
+    <h3>Normalized fields</h3>
+    ${renderNormalized(d.normalizedFields || {})}
+
+    <h3>Events (${(d.events || []).length})</h3>
+    ${renderEvents(d.events || [])}
+
+    <h3>Review queue (${(d.reviewQueue || []).length})</h3>
+    ${renderReview(d.reviewQueue || [])}
+
+    <details>
+      <summary>Raw mapping metadata</summary>
+      <pre>${escape(JSON.stringify(d.mappingMetadata || {}, null, 2))}</pre>
+    </details>
+    <details>
+      <summary>Raw fields (first sample per key)</summary>
+      <pre>${escape(JSON.stringify(d.rawFields || {}, null, 2))}</pre>
+    </details>
+    <details>
+      <summary>Full envelope JSON</summary>
+      <pre>${escape(JSON.stringify(d, null, 2))}</pre>
+    </details>
+
+    <div class="footer-note">
+      Served from <code>sample_outputs/*.json</code> — generated by <code>python -m parser.cli</code>.
+      In production this comes back live from the FastAPI <code>/parse-and-normalize</code> endpoint.
+    </div>
+  `;
+}
+
+function renderNormalized(nf) {
+  const entries = Object.entries(nf);
+  if (!entries.length) return `<div class="empty">No canonical fields mapped from this file.</div>`;
+  return `<table><thead><tr>
+    <th>Canonical</th><th>Value</th><th>Unit</th><th>Method</th><th>Conf</th><th>Source field</th>
+  </tr></thead><tbody>${entries.map(([k, v]) => `
+    <tr>
+      <td class="mono">${escape(k)}</td>
+      <td class="num">${formatValue(v.value)}</td>
+      <td class="mono">${escape(v.unit || "—")}</td>
+      <td>${methodPill(v.method)}</td>
+      <td class="num">${(v.confidence || 0).toFixed(2)}</td>
+      <td class="mono"><span class="src">${escape(v.sourceField || "")}</span></td>
+    </tr>`).join("")}</tbody></table>`;
+}
+
+function renderEvents(events) {
+  if (!events.length) return `<div class="empty">No events extracted.</div>`;
+  const shown = events.slice(0, 40);
+  const more = events.length > shown.length ? `<div class="empty">… and ${events.length - shown.length} more</div>` : "";
+  return `<table><thead><tr>
+    <th>Line</th><th>Timestamp</th><th>Type</th><th>Params</th>
+  </tr></thead><tbody>${shown.map(e => `
+    <tr>
+      <td class="num">${e.lineNumber ?? ""}</td>
+      <td class="mono">${escape(e.timestamp || "—")}</td>
+      <td><span class="event-type ${escape(e.lineType)}">${escape(e.lineType)}</span></td>
+      <td class="mono">${escape(summariseParams(e.extractedParams))}</td>
+    </tr>`).join("")}</tbody></table>${more}`;
+}
+
+function renderReview(rq) {
+  if (!rq.length) return `<div class="empty">Nothing waiting for review — every raw field mapped.</div>`;
+  return `<table><thead><tr>
+    <th>Raw field</th><th>Suggested canonical</th><th>Confidence</th><th>Sample value</th>
+  </tr></thead><tbody>${rq.map(r => `
+    <tr>
+      <td class="mono">${escape(r.rawField)}</td>
+      <td class="mono">${escape(r.suggestedCanonical || "—")}</td>
+      <td class="num">${(r.confidence || 0).toFixed(2)}</td>
+      <td class="mono">${escape(r.sampleValue)}</td>
+    </tr>`).join("")}</tbody></table>`;
+}
+
+function methodPill(m) {
+  if (m === "alias_match") return `<span class="pill good">ALIAS</span>`;
+  if (m === "fuzzy_match") return `<span class="pill warn">FUZZY</span>`;
+  if (m === "llm_fallback") return `<span class="pill neutral">LLM</span>`;
+  return `<span class="pill bad">UNKNOWN</span>`;
+}
+
+function formatValue(v) {
+  if (v === null || v === undefined) return "—";
+  if (typeof v === "number") return Number.isInteger(v) ? v : v.toFixed(4).replace(/\.?0+$/, "");
+  return escape(String(v));
+}
+
+function summariseParams(p) {
+  if (!p || typeof p !== "object") return "";
+  const pairs = Object.entries(p).slice(0, 4).map(([k,v]) => `${k}=${typeof v === "object" ? "…" : String(v)}`);
+  const more = Object.keys(p).length > 4 ? `  +${Object.keys(p).length - 4}` : "";
+  return pairs.join("  ") + more;
+}
+
+function escape(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+}
+
+// Load first sample on startup
+load(SAMPLES[0].id);
+</script>
+</body>
+</html>
